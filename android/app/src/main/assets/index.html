@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#1e3a5f">
+<title>LabMat Suite v2.0</title>
+<link rel="stylesheet" href="shared/style.css">
+</head>
+<body>
+<main class="main-content">
+  <section class="chapters-root">
+    <div class="card">
+      <h2>📚 Capítulos de Laboratorio</h2>
+      <p class="fs-small mb-10">Selecciona el capítulo correspondiente a tu práctica:</p>
+      <div class="chapters-grid">
+        <a class="chapter-card" data-chapter="cap1" href="chapters/chapter1.html">
+          <span class="ch-icon">🪨</span>
+          <div class="ch-text">
+            <span class="ch-number">Capítulo 1</span>
+            <span class="ch-title">Granulometría</span>
+            <span class="ch-desc">Análisis granulométrico de áridos · ASTM C136</span>
+          </div>
+        </a>
+        <a class="chapter-card" data-chapter="cap2" href="chapters/chapter2.html">
+          <span class="ch-icon">📊</span>
+          <div class="ch-text">
+            <span class="ch-number">Capítulo 2</span>
+            <span class="ch-title">Análisis Estadístico</span>
+            <span class="ch-desc">Media, frecuencias, dispersión, CV, curva normal, Z</span>
+          </div>
+        </a>
+        <a class="chapter-card" data-chapter="cap3" href="chapters/chapter3.html">
+          <span class="ch-icon">🧪</span>
+          <div class="ch-text">
+            <span class="ch-number">Capítulo 3</span>
+            <span class="ch-title">Aglomerantes</span>
+            <span class="ch-desc">Cemento, morteros y asfalto · Marshall</span>
+          </div>
+        </a>
+        <a class="chapter-card" data-chapter="cap4" href="chapters/chapter4.html">
+          <span class="ch-icon">🏗️</span>
+          <div class="ch-text">
+            <span class="ch-number">Capítulo 4</span>
+            <span class="ch-title">Hormigón y Bloques</span>
+            <span class="ch-desc">Dosificación ACI, compresión, bloques</span>
+          </div>
+        </a>
+        <a class="chapter-card" data-chapter="cap5" href="chapters/chapter5.html">
+          <span class="ch-icon">⚙️</span>
+          <div class="ch-text">
+            <span class="ch-number">Capítulo 5</span>
+            <span class="ch-title">Materiales Metálicos</span>
+            <span class="ch-desc">Tracción, torsión e impacto de aceros</span>
+          </div>
+        </a>
+        <a class="chapter-card" data-chapter="cap6" href="chapters/chapter6.html">
+          <span class="ch-icon">🪵</span>
+          <div class="ch-text">
+            <span class="ch-number">Capítulo 6</span>
+            <span class="ch-title">Madera y Plásticos</span>
+            <span class="ch-desc">Humedad, gravedad específica, flexión</span>
+          </div>
+        </a>
+      </div>
+      <div class="global-actions">
+        <button onclick="exportData()">📤 Exportar respaldo</button>
+        <button onclick="importData()">📥 Importar respaldo</button>
+      </div>
+    </div>
+  </section>
+</main>
+<div class="save-indicator" id="saveIndicator">Guardado ✓</div>
+<script src="shared/engine.js"></script>
+<script>
+  // Notificar al shell nativo
+  if (window.Android && Android.onChapterChanged) {
+    Android.onChapterChanged('home', 'LabMat Suite');
+  }
+  window.onAndroidBack = function() {
+    if (window.Android && Android.exitApp) { Android.exitApp(); return true; }
+    return false;
+  };
+</script>
+</body>
+</html>
