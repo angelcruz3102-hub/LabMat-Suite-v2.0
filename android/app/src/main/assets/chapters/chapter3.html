@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Capítulo 3 — Aglomerantes</title>
+<link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+<main class="main-content">
+  <a class="back-btn" href="../index.html">← Capítulos</a>
+  <div class="card">
+    <h2>🧪 Capítulo 3 · Aglomerantes</h2>
+    <p class="fs-small mb-10">Cemento portland, morteros y asfalto · Método Marshall</p>
+    <div class="menu-grid">
+      <button class="menu-card" onclick="showTool('agl_marshall')">
+        <span class="mc-icon">💠</span>
+        <div class="mc-text"><span class="mc-title">Asfalto · Marshall</span><span class="mc-desc">Gmb, Gmm, VTM, VMA, VFA</span></div>
+      </button>
+    </div>
+  </div>
+
+  <div class="tool-view" data-tool="agl_marshall" data-fn="calcModulo5">
+    <button class="back-btn" onclick="showChapterMenu()">← Herramientas</button>
+    <div class="card">
+      <div class="tabs" id="m5_tabs">
+        <button class="tab-btn active" data-tab="m5_prueba1">Prueba 1</button>
+        <button class="tab-btn" data-tab="m5_prueba2">Prueba 2</button>
+        <button class="tab-btn" data-tab="m5_prueba3">Prueba 3</button>
+      </div>
+      <div class="tab-content active" id="m5_prueba1">
+        <h3>Asfalto · Método Marshall (ASTM D6927)</h3>
+        <div class="form-group">
+          <label for="m5_A_1">A (seca g):</label><input type="number" id="m5_A_1" step="any">
+          <label for="m5_B_1">B (SSS g):</label><input type="number" id="m5_B_1" step="any">
+          <label for="m5_C_1">C (sumergida g):</label><input type="number" id="m5_C_1" step="any">
+        </div>
+        <div class="form-group">
+          <label for="m5_Gmm_1">Gmm:</label><input type="number" id="m5_Gmm_1" step="any">
+          <label for="m5_Gsb_1">Gsb:</label><input type="number" id="m5_Gsb_1" step="any">
+          <label for="m5_Ps_1">%Ps:</label><input type="number" id="m5_Ps_1" step="any" value="95">
+        </div>
+        <div class="result-box" id="m5_grav_result_1">Gmb = 0, Gmm = 0</div>
+        <div class="result-box" id="m5_vol_result_1">VTM = 0%, VMA = 0%, VFA = 0%</div>
+        <div class="viz-container" id="viz_m5_vol_1"></div>
+        <button class="send-report-btn" onclick="enviarAInforme('marshall','prueba1')">📤 Enviar a Informe</button>
+        <button class="success clear-btn" data-prueba="1" onclick="clearMarshall(1)">Limpiar Prueba 1</button>
+      </div>
+      <div class="tab-content" id="m5_prueba2"></div>
+      <div class="tab-content" id="m5_prueba3"></div>
+    </div>
+  </div>
+</main>
+<div class="save-indicator" id="saveIndicator">Guardado ✓</div>
+<script src="../shared/engine.js"></script>
+<script>
+  initTabs('m5_tabs');
+  duplicateTabContent('m5_prueba1', 'm5_prueba2', '2');
+  duplicateTabContent('m5_prueba1', 'm5_prueba3', '3');
+  document.addEventListener('input', e => {
+    if (e.target.id && e.target.id.startsWith('m5_')) {
+      const idx = e.target.id.slice(-1);
+      calcModulo5('prueba' + idx);
+    }
+  });
+  function clearMarshall(n) {
+    ['A','B','C','Gmm','Gsb'].forEach(p => {
+      const el = document.getElementById(`m5_${p}_${n}`);
+      if (el) el.value = '';
+    });
+    document.getElementById(`m5_Ps_${n}`).value = '95';
+    calcModulo5('prueba' + n);
+  }
+</script>
+</body>
+</html>
