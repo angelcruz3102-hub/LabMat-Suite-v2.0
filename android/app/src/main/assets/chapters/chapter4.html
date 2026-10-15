@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Capítulo 4 — Hormigón y Bloques</title>
+<link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+<main class="main-content">
+  <a class="back-btn" href="../index.html">← Capítulos</a>
+  <div class="card">
+    <h2>🏗️ Capítulo 4 · Hormigón y Bloques</h2>
+    <p class="fs-small mb-10">Dosificación ACI, compresión, flexión y bloques de mampostería</p>
+    <div class="menu-grid">
+      <button class="menu-card" onclick="showTool('hor_comp')"><span class="mc-icon">💪</span><div class="mc-text"><span class="mc-title">Compresión</span><span class="mc-desc">ASTM C39</span></div></button>
+      <button class="menu-card" onclick="showTool('hor_trac')"><span class="mc-icon">🌉</span><div class="mc-text"><span class="mc-title">Tracción Indirecta</span><span class="mc-desc">ASTM C496</span></div></button>
+      <button class="menu-card" onclick="showTool('hor_flex')"><span class="mc-icon">📏</span><div class="mc-text"><span class="mc-title">Flexión</span><span class="mc-desc">ASTM C78</span></div></button>
+      <button class="menu-card" onclick="showTool('hor_aci')"><span class="mc-icon">📈</span><div class="mc-text"><span class="mc-title">Resistencia Media ACI</span><span class="mc-desc">f'cr</span></div></button>
+      <button class="menu-card" onclick="showTool('hor_bloq')"><span class="mc-icon">🧱</span><div class="mc-text"><span class="mc-title">Bloques</span><span class="mc-desc">ASTM C140</span></div></button>
+    </div>
+  </div>
+
+  <!-- COMPRESIÓN -->
+  <div class="tool-view" data-tool="hor_comp" data-fn="calcModulo3">
+    <button class="back-btn" onclick="showChapterMenu()">← Herramientas</button>
+    <div class="card">
+      <div class="tabs" id="m3_tabs">
+        <button class="tab-btn active" data-tab="m3_prueba1">Prueba 1</button>
+        <button class="tab-btn" data-tab="m3_prueba2">Prueba 2</button>
+        <button class="tab-btn" data-tab="m3_prueba3">Prueba 3</button>
+      </div>
+      <div class="tab-content active" id="m3_prueba1">
+        <h3>Resistencia a la Compresión (ASTM C39)</h3>
+        <div class="form-group">
+          <label for="m3_P_1">Carga P:</label><input type="number" id="m3_P_1" step="any">
+          <select class="unit-select" id="m3_P_unit_1"><option value="kN">kN</option><option value="kg">kg</option><option value="lb">lb</option></select>
+          <label for="m3_dim_1">Dimensión:</label><input type="number" id="m3_dim_1" step="any">
+          <select class="unit-select" id="m3_dim_unit_1"><option value="mm">mm</option><option value="cm">cm</option></select>
+          <label for="m3_shape_1">Forma:</label>
+          <select id="m3_shape_1"><option value="cilindro">Cilindro</option><option value="cubo">Cubo</option></select>
+        </div>
+        <div class="result-box" id="m3_fc_result_1">f'c = 0 MPa</div>
+
+        <h3>Tracción Indirecta (ASTM C496)</h3>
+        <div class="form-group">
+          <label for="m3_traccion_P_1">Carga:</label><input type="number" id="m3_traccion_P_1" step="any">
+          <select class="unit-select" id="m3_traccion_P_unit_1"><option value="kN">kN</option><option value="kg">kg</option></select>
+          <label for="m3_traccion_d_1">Diámetro:</label><input type="number" id="m3_traccion_d_1" step="any">
+          <label for="m3_traccion_L_1">Longitud:</label><input type="number" id="m3_traccion_L_1" step="any">
+        </div>
+        <div class="result-box" id="m3_traccion_result_1">T = 0 MPa</div>
+
+        <h3>Flexión (ASTM C78)</h3>
+        <div class="form-group">
+          <label for="m3_flex_P_1">Carga:</label><input type="number" id="m3_flex_P_1" step="any">
+          <select class="unit-select" id="m3_flex_P_unit_1"><option value="kN">kN</option><option value="N">N</option><option value="kg">kg</option></select>
+          <label for="m3_flex_L_1">Luz:</label><input type="number" id="m3_flex_L_1" step="any">
+          <label for="m3_flex_b_1">Ancho:</label><input type="number" id="m3_flex_b_1" step="any">
+          <label for="m3_flex_d_1">Altura:</label><input type="number" id="m3_flex_d_1" step="any">
+        </div>
+        <div class="result-box" id="m3_flex_result_1">R = 0 MPa</div>
+
+        <h3>Resistencia Media Requerida ACI 318</h3>
+        <div class="form-group">
+          <label for="m3_fc_espec_1">f'c espec.:</label><input type="number" id="m3_fc_espec_1" step="any">
+          <label for="m3_s_1">s (MPa):</label><input type="number" id="m3_s_1" step="any">
+        </div>
+        <div class="result-box" id="m3_fcr_result_1">f'cr = 0 MPa</div>
+
+        <h3>Bloques de Mampostería (ASTM C140)</h3>
+        <div class="form-group">
+          <label for="m3_bloque_P_1">Carga:</label><input type="number" id="m3_bloque_P_1" step="any">
+          <select class="unit-select" id="m3_bloque_P_unit_1"><option value="kN">kN</option><option value="N">N</option><option value="kg">kg</option></select>
+          <label for="m3_bloque_largo_1">Largo:</label><input type="number" id="m3_bloque_largo_1" step="any">
+          <label for="m3_bloque_ancho_1">Ancho:</label><input type="number" id="m3_bloque_ancho_1" step="any">
+          <label for="m3_bloque_huecos_1">Área huecos:</label><input type="number" id="m3_bloque_huecos_1" step="any">
+        </div>
+        <div class="result-box" id="m3_bloque_result_1">σ bruto = 0, σ neto = 0</div>
+        <button class="send-report-btn" onclick="enviarAInforme('compresion','prueba1')">📤 Enviar a Informe</button>
+        <button class="success clear-btn" onclick="clearHor(1)">Limpiar Prueba 1</button>
+      </div>
+      <div class="tab-content" id="m3_prueba2"></div>
+      <div class="tab-content" id="m3_prueba3"></div>
+    </div>
+  </div>
+</main>
+<div class="save-indicator" id="saveIndicator">Guardado ✓</div>
+<script src="../shared/engine.js"></script>
+<script>
+  initTabs('m3_tabs');
+  duplicateTabContent('m3_prueba1', 'm3_prueba2', '2');
+  duplicateTabContent('m3_prueba1', 'm3_prueba3', '3');
+  document.addEventListener('input', e => {
+    if (e.target.id && e.target.id.startsWith('m3_')) {
+      const idx = e.target.id.slice(-1);
+      calcModulo3('prueba' + idx);
+    }
+  });
+  function clearHor(n) {
+    document.querySelectorAll(`#m3_prueba${n} input`).forEach(i => i.value = '');
+    calcModulo3('prueba' + n);
+  }
+</script>
+</body>
+</html>
