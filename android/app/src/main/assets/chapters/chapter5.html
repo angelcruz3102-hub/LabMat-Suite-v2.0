@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Capítulo 5 — Materiales Metálicos</title>
+<link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+<main class="main-content">
+  <a class="back-btn" href="../index.html">← Capítulos</a>
+  <div class="card">
+    <h2>⚙️ Capítulo 5 · Materiales Metálicos</h2>
+    <p class="fs-small mb-10">Tracción, torsión e impacto de aceros y aluminios</p>
+    <div class="menu-grid">
+      <button class="menu-card" onclick="showTool('met_traccion')">
+        <span class="mc-icon">🔗</span>
+        <div class="mc-text"><span class="mc-title">Tracción (ASTM E8)</span><span class="mc-desc">Elongación y reducción de área</span></div>
+      </button>
+      <button class="menu-card" onclick="showTool('met_torsion')">
+        <span class="mc-icon">🌀</span>
+        <div class="mc-text"><span class="mc-title">Torsión (ASTM E143)</span><span class="mc-desc">τ_max y módulo G</span></div>
+      </button>
+    </div>
+  </div>
+
+  <div class="tool-view" data-tool="met_traccion" data-fn="calcModulo4">
+    <button class="back-btn" onclick="showChapterMenu()">← Herramientas</button>
+    <div class="card">
+      <div class="tabs" id="m4_tabs">
+        <button class="tab-btn active" data-tab="m4_prueba1">Prueba 1</button>
+        <button class="tab-btn" data-tab="m4_prueba2">Prueba 2</button>
+        <button class="tab-btn" data-tab="m4_prueba3">Prueba 3</button>
+      </div>
+      <div class="tab-content active" id="m4_prueba1">
+        <h3>Tracción de Metales (ASTM E8)</h3>
+        <div class="form-group">
+          <label for="m4_L0_1">L₀:</label><input type="number" id="m4_L0_1" step="any">
+          <label for="m4_Lf_1">Lf:</label><input type="number" id="m4_Lf_1" step="any">
+          <label for="m4_A0_1">A₀:</label><input type="number" id="m4_A0_1" step="any">
+          <label for="m4_Af_1">Af:</label><input type="number" id="m4_Af_1" step="any">
+        </div>
+        <div class="result-box" id="m4_traccion_result_1">%Elongación = 0%, %Reducción = 0%</div>
+
+        <h3>Torsión (ASTM E143)</h3>
+        <div class="form-group">
+          <label for="m4_T_1">Par T:</label><input type="number" id="m4_T_1" step="any">
+          <select class="unit-select" id="m4_T_unit_1"><option value="N.m">N·m</option><option value="kN.m">kN·m</option></select>
+          <label for="m4_d_1">Diámetro:</label><input type="number" id="m4_d_1" step="any">
+          <label for="m4_L_1">Longitud:</label><input type="number" id="m4_L_1" step="any">
+          <label for="m4_theta_1">θ (rad):</label><input type="number" id="m4_theta_1" step="any">
+        </div>
+        <div class="result-box" id="m4_torsion_result_1">τ_max = 0 MPa, G = 0 MPa</div>
+        <div class="viz-container" id="viz_m4_tors_1"></div>
+        <button class="send-report-btn" onclick="enviarAInforme('traccion','prueba1')">📤 Enviar a Informe</button>
+        <button class="success clear-btn" onclick="clearMet(1)">Limpiar Prueba 1</button>
+      </div>
+      <div class="tab-content" id="m4_prueba2"></div>
+      <div class="tab-content" id="m4_prueba3"></div>
+    </div>
+  </div>
+</main>
+<div class="save-indicator" id="saveIndicator">Guardado ✓</div>
+<script src="../shared/engine.js"></script>
+<script>
+  initTabs('m4_tabs');
+  duplicateTabContent('m4_prueba1', 'm4_prueba2', '2');
+  duplicateTabContent('m4_prueba1', 'm4_prueba3', '3');
+  document.addEventListener('input', e => {
+    if (e.target.id && e.target.id.startsWith('m4_')) {
+      const idx = e.target.id.slice(-1);
+      calcModulo4('prueba' + idx);
+    }
+  });
+  function clearMet(n) {
+    document.querySelectorAll(`#m4_prueba${n} input`).forEach(i => i.value = '');
+    calcModulo4('prueba' + n);
+  }
+</script>
+</body>
+</html>
