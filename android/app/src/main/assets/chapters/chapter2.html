@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Capítulo 2 — Análisis Estadístico</title>
+<link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+<main class="main-content">
+  <a class="back-btn" href="../index.html">← Capítulos</a>
+  <div class="card">
+    <h2>📊 Capítulo 2 · Análisis Estadístico</h2>
+    <p class="fs-small mb-10">Media, frecuencias, dispersión, CV, curva normal y Valor Z</p>
+    <div class="menu-grid">
+      <button class="menu-card" onclick="showTool('stats_descriptiva')">
+        <span class="mc-icon">📐</span>
+        <div class="mc-text"><span class="mc-title">Estadística Descriptiva</span><span class="mc-desc">Media, s, CV, R, S², Sturges</span></div>
+      </button>
+      <button class="menu-card" onclick="showTool('stats_frecuencias')">
+        <span class="mc-icon">📈</span>
+        <div class="mc-text"><span class="mc-title">Frecuencias y Sturges</span><span class="mc-desc">Tabla de clases + histograma</span></div>
+      </button>
+      <button class="menu-card" onclick="showTool('stats_normal')">
+        <span class="mc-icon">🎯</span>
+        <div class="mc-text"><span class="mc-title">Curva Normal y Valor Z</span><span class="mc-desc">Probabilidad de ocurrencia</span></div>
+      </button>
+    </div>
+  </div>
+
+  <!-- ESTADÍSTICA DESCRIPTIVA -->
+  <div class="tool-view" data-tool="stats_descriptiva" data-fn="renderStats">
+    <button class="back-btn" onclick="showChapterMenu()">← Herramientas</button>
+    <div class="card">
+      <h3>Estadística Descriptiva (ASTM E2586)</h3>
+      <div class="form-group">
+        <label for="m6_nuevo_valor">Agregar valor:</label>
+        <input type="number" id="m6_nuevo_valor" step="any" placeholder="Ej: 25.4">
+        <button onclick="addStatValue()">Agregar</button>
+        <button class="danger" onclick="clearStats()">Limpiar</button>
+      </div>
+      <div class="table-responsive">
+        <table id="m6_stats_table">
+          <thead><tr><th>#</th><th>Valor</th><th>Acción</th></tr></thead>
+          <tbody id="m6_stats_body"></tbody>
+        </table>
+      </div>
+      <div class="result-box" id="m6_stats_result">n=0, Media=0, s=0, CV=0%</div>
+      <div class="gran-results">
+        <div class="gran-results-item"><span>Rango R</span><strong id="m6_range">—</strong></div>
+        <div class="gran-results-item"><span>Varianza S²</span><strong id="m6_var">—</strong></div>
+        <div class="gran-results-item"><span>Sturges k</span><strong id="m6_sturges">—</strong></div>
+      </div>
+      <div class="viz-container" id="viz_m6_chart"></div>
+      <button class="send-report-btn" onclick="enviarAInforme('estadistica')">📤 Enviar a Informe</button>
+    </div>
+  </div>
+
+  <!-- FRECUENCIAS -->
+  <div class="tool-view" data-tool="stats_frecuencias" data-fn="calcFrequencies">
+    <button class="back-btn" onclick="showChapterMenu()">← Herramientas</button>
+    <div class="card">
+      <h3>Frecuencias y Regla de Sturges</h3>
+      <div class="note">k = 1 + 3.322·log₁₀(n) · Los datos se toman de la Estadística Descriptiva.</div>
+      <div class="result-box">Número de clases óptimo (k): <strong id="m6_freq_k">—</strong></div>
+      <div class="table-responsive">
+        <table>
+          <thead><tr><th>Clase</th><th>Intervalo</th><th>Frecuencia f</th><th>Frecuencia relativa</th><th>% Relativo</th></tr></thead>
+          <tbody id="m6_freq_body"><tr><td colspan="5" class="viz-empty">Agrega valores en Estadística Descriptiva</td></tr></tbody>
+        </table>
+      </div>
+      <div class="viz-container" id="viz_m6_hist"></div>
+      <button onclick="calcFrequencies()">🔄 Recalcular</button>
+    </div>
+  </div>
+
+  <!-- CURVA NORMAL Y Z -->
+  <div class="tool-view" data-tool="stats_normal" data-fn="calcZScore">
+    <button class="back-btn" onclick="showChapterMenu()">← Herramientas</button>
+    <div class="card">
+      <h3>Curva Normal Estándar y Valor Z</h3>
+      <div class="note">Z = (x − x̄) / S. Probabilidad calculada por aproximación Zelen &amp; Severo (precisión 7.5e-8).</div>
+      <div class="form-group">
+        <label for="m6_z_x">Valor a evaluar (x):</label>
+        <input type="number" id="m6_z_x" step="any" placeholder="Ej: 28">
+        <button onclick="calcZScore()">Calcular Z</button>
+      </div>
+      <div class="gran-results">
+        <div class="gran-results-item"><span>Valor Z</span><strong id="m6_z_result">—</strong></div>
+        <div class="gran-results-item"><span>P(X &lt; x)</span><strong id="m6_z_pl">—</strong></div>
+        <div class="gran-results-item"><span>P(X &gt; x)</span><strong id="m6_z_pg">—</strong></div>
+      </div>
+      <div class="viz-container" id="viz_m6_norm"></div>
+    </div>
+  </div>
+</main>
+<div class="save-indicator" id="saveIndicator">Guardado ✓</div>
+<script src="../shared/engine.js"></script>
+<script>
+  loadStatsValues();
+</script>
+</body>
+</html>
