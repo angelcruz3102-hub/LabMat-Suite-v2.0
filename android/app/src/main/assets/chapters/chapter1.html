@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Capítulo 1 — Granulometría</title>
+<link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+<main class="main-content">
+  <a class="back-btn" href="../index.html">← Capítulos</a>
+  <div class="card">
+    <h2>🪨 Capítulo 1 · Granulometría</h2>
+    <p class="fs-small mb-10">Análisis granulométrico de áridos por tamizado · ASTM C136</p>
+    <div class="menu-grid">
+      <button class="menu-card" onclick="showTool('m2_gran')">
+        <span class="mc-icon">📊</span>
+        <div class="mc-text"><span class="mc-title">Análisis Granulométrico</span><span class="mc-desc">Tamizado completo + curva + MF</span></div>
+      </button>
+    </div>
+  </div>
+
+  <div class="tool-view" data-tool="m2_gran" data-fn="calcGranulometria">
+    <button class="back-btn" onclick="showChapterMenu()">← Herramientas</button>
+    <div class="card">
+      <div class="tabs" id="m2_tabs">
+        <button class="tab-btn active" data-tab="m2_prueba1">Prueba 1</button>
+        <button class="tab-btn" data-tab="m2_prueba2">Prueba 2</button>
+        <button class="tab-btn" data-tab="m2_prueba3">Prueba 3</button>
+      </div>
+      <div class="tab-content active" id="m2_prueba1">
+        <h3>Análisis Granulométrico (ASTM C136)</h3>
+        <div class="note">Ingresa pesos retenidos, o usa P.Vacío y P.+Muestra para autocalcular.</div>
+        <div class="viz-container" id="viz_m2_gran_1"></div>
+        <div class="table-responsive">
+          <table id="m2_gran_table_1">
+            <thead><tr><th>Tamiz</th><th>Apertura (mm)</th><th>P. Vacío</th><th>P. + Muestra</th><th>Peso Ret. (g)</th><th>% Ret.</th><th>% Acum.</th><th>% Pasa</th></tr></thead>
+            <tbody>
+              <tr><td>3"</td><td>75.0</td><td><input type="number" class="m2_peso_vacio"></td><td><input type="number" class="m2_peso_muestra"></td><td><input type="number" class="m2_peso_retenido"></td><td class="m2_pct_retenido">0</td><td class="m2_pct_acum">0</td><td class="m2_pct_pasa">100</td></tr>
+              <tr><td>2"</td><td>50.0</td><td><input type="number" class="m2_peso_vacio"></td><td><input type="number" class="m2_peso_muestra"></td><td><input type="number" class="m2_peso_retenido"></td><td class="m2_pct_retenido">0</td><td class="m2_pct_acum">0</td><td class="m2_pct_pasa">100</td></tr>
+              <tr><td>1 1/2"</td><td>37.5</td><td><input type="number" class="m2_peso_vacio"></td><td><input type="number" class="m2_peso_muestra"></td><td><input type="number" class="m2_peso_retenido"></td><td class="m2_pct_retenido">0</td><td class="m2_pct_acum">0</td><td class="m2_pct_pasa">100</td></tr>
+              <tr><td>1"</td><td>25.0</td><td><input type="number" class="m2_peso_vacio"></td><td><input type="number" class="m2_peso_muestra"></td><td><input type="number" class="m2_peso_retenido"></td><td class="m2_pct_retenido">0</td><td class="m2_pct_acum">0</td><td class="m2_pct_pasa">100</td></tr>
+              <tr><td>3/4"</td><td>19.0</td><td><input type="number" class="m2_peso_vacio"></td><td><input type="number" class="m2_peso_muestra"></td><td><input type="number" class="m2_peso_retenido"></td><td class="m2_pct_retenido">0</td><td class="m2_pct_acum">0</td><td class="m2_pct_pasa">100</td></tr>
+              <tr><td>1/2"</td><td>12.5</td><td><input type="number" class="m2_peso_vacio"></td><td><input type="number" class="m2_peso_muestra"></td><td><input type="number" class="m2_peso_retenido"></td><td class="m2_pct_retenido">0</td><td class="m2_pct_acum">0</td><td class="m2_pct_pasa">100</td></tr>
+              <tr><td>3/8"</td><td>9.5</td><td><input type="number" class="m2_peso_vacio"></td><td><input type="number" class="m2_peso_muestra"></td><td><input type="number" class="m2_peso_retenido"></td><td class="m2_pct_retenido">0</td><td class="m2_pct_acum">0</td><td class="m2_pct_pasa">100</td></tr>
+              <tr><td>No. 4</td><td>4.75</td><td><input type="number" class="m2_peso_vacio"></td><td><input type="number" class="m2_peso_muestra"></td><td><input type="number" class="m2_peso_retenido"></td><td class="m2_pct_retenido">0</td><td class="m2_pct_acum">0</td><td class="m2_pct_pasa">100</td></tr>
+              <tr><td>No. 8</td><td>2.36</td><td><input type="number" class="m2_peso_vacio"></td><td><input type="number" class="m2_peso_muestra"></td><td><input type="number" class="m2_peso_retenido"></td><td class="m2_pct_retenido">0</td><td class="m2_pct_acum">0</td><td class="m2_pct_pasa">100</td></tr>
+              <tr><td>No. 16</td><td>1.18</td><td><input type="number" class="m2_peso_vacio"></td><td><input type="number" class="m2_peso_muestra"></td><td><input type="number" class="m2_peso_retenido"></td><td class="m2_pct_retenido">0</td><td class="m2_pct_acum">0</td><td class="m2_pct_pasa">100</td></tr>
+              <tr><td>No. 30</td><td>0.60</td><td><input type="number" class="m2_peso_vacio"></td><td><input type="number" class="m2_peso_muestra"></td><td><input type="number" class="m2_peso_retenido"></td><td class="m2_pct_retenido">0</td><td class="m2_pct_acum">0</td><td class="m2_pct_pasa">100</td></tr>
+              <tr><td>No. 50</td><td>0.30</td><td><input type="number" class="m2_peso_vacio"></td><td><input type="number" class="m2_peso_muestra"></td><td><input type="number" class="m2_peso_retenido"></td><td class="m2_pct_retenido">0</td><td class="m2_pct_acum">0</td><td class="m2_pct_pasa">100</td></tr>
+              <tr><td>No. 100</td><td>0.15</td><td><input type="number" class="m2_peso_vacio"></td><td><input type="number" class="m2_peso_muestra"></td><td><input type="number" class="m2_peso_retenido"></td><td class="m2_pct_retenido">0</td><td class="m2_pct_acum">0</td><td class="m2_pct_pasa">100</td></tr>
+              <tr><td>No. 200</td><td>0.075</td><td><input type="number" class="m2_peso_vacio"></td><td><input type="number" class="m2_peso_muestra"></td><td><input type="number" class="m2_peso_retenido"></td><td class="m2_pct_retenido">0</td><td class="m2_pct_acum">0</td><td class="m2_pct_pasa">100</td></tr>
+              <tr><td>Fondo</td><td>—</td><td><input type="number" class="m2_peso_vacio"></td><td><input type="number" class="m2_peso_muestra"></td><td><input type="number" class="m2_peso_retenido"></td><td class="m2_pct_retenido">0</td><td class="m2_pct_acum">0</td><td class="m2_pct_pasa">100</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="result-box" id="m2_mf_result_1">Módulo de Finura = 0.00</div>
+        <div class="gran-results">
+          <div class="gran-results-item"><span>Peso Total</span><strong id="m2_peso_total_1">0.0 g</strong></div>
+          <div class="gran-results-item"><span>TM</span><strong id="m2_tm_1">No determinado</strong></div>
+          <div class="gran-results-item"><span>TMN</span><strong id="m2_tmn_1">No determinado</strong></div>
+        </div>
+        <button class="send-report-btn" onclick="enviarAInforme('granulometria','prueba1')">📤 Enviar a Informe</button>
+        <button class="success clear-btn" data-prueba="1" onclick="clearGranulometria(1)">Limpiar Prueba 1</button>
+      </div>
+      <div class="tab-content" id="m2_prueba2"></div>
+      <div class="tab-content" id="m2_prueba3"></div>
+    </div>
+  </div>
+</main>
+<div class="save-indicator" id="saveIndicator">Guardado ✓</div>
+<script src="../shared/engine.js"></script>
+<script>
+  initTabs('m2_tabs');
+  duplicateTabContent('m2_prueba1', 'm2_prueba2', '2');
+  duplicateTabContent('m2_prueba1', 'm2_prueba3', '3');
+  ['prueba1','prueba2','prueba3'].forEach((p, i) => loadGranulometria(p));
+
+  document.addEventListener('input', e => {
+    const t = e.target;
+    if (t.matches('.m2_peso_vacio, .m2_peso_muestra')) {
+      const row = t.closest('tr'), table = t.closest('table');
+      if (!row || !table) return;
+      const v = row.querySelector('.m2_peso_vacio').value.trim();
+      const m = row.querySelector('.m2_peso_muestra').value.trim();
+      if (m !== '') {
+        const ret = Math.max(0, (parseFloat(m) || 0) - (v === '' ? 0 : parseFloat(v) || 0));
+        row.querySelector('.m2_peso_retenido').value = Math.round(ret * 100) / 100;
+      }
+      const idx = table.id.slice(-1);
+      calcGranulometria('prueba' + idx);
+    } else if (t.matches('.m2_peso_retenido')) {
+      const table = t.closest('table');
+      if (table) calcGranulometria('prueba' + table.id.slice(-1));
+    }
+  });
+  function clearGranulometria(n) {
+    document.querySelectorAll(`#m2_gran_table_${n} input`).forEach(i => i.value = '');
+    calcGranulometria('prueba' + n);
+  }
+</script>
+</body>
+</html>
