@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Capítulo 6 — Madera y Plásticos</title>
+<link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+<main class="main-content">
+  <a class="back-btn" href="../index.html">← Capítulos</a>
+  <div class="card">
+    <h2>🪵 Capítulo 6 · Madera y Plásticos</h2>
+    <p class="fs-small mb-10">Humedad, gravedad específica, flexión estática y compresión</p>
+    <div class="menu-grid">
+      <button class="menu-card" onclick="showTool('mad_flexion')">
+        <span class="mc-icon">🪵</span>
+        <div class="mc-text"><span class="mc-title">Flexión en Madera</span><span class="mc-desc">ASTM D143 · MOR</span></div>
+      </button>
+    </div>
+  </div>
+
+  <div class="tool-view" data-tool="mad_flexion" data-fn="calcMadera">
+    <button class="back-btn" onclick="showChapterMenu()">← Herramientas</button>
+    <div class="card">
+      <div class="tabs" id="m4_tabs_mad">
+        <button class="tab-btn active" data-tab="m4_mad_p1">Prueba 1</button>
+      </div>
+      <div class="tab-content active" id="m4_mad_p1">
+        <h3>Flexión en Madera (ASTM D143)</h3>
+        <div class="form-group">
+          <label for="m4_mad_P_1">Carga P:</label><input type="number" id="m4_mad_P_1" step="any">
+          <label for="m4_mad_L_1">Luz L:</label><input type="number" id="m4_mad_L_1" step="any">
+          <label for="m4_mad_b_1">Ancho b:</label><input type="number" id="m4_mad_b_1" step="any">
+          <label for="m4_mad_h_1">Altura h:</label><input type="number" id="m4_mad_h_1" step="any">
+        </div>
+        <div class="result-box" id="m4_madera_result_1">MOR = 0 MPa</div>
+        <div class="viz-container" id="viz_m4_mad_1"></div>
+        <button class="send-report-btn" onclick="enviarAInforme('madera','prueba1')">📤 Enviar a Informe</button>
+        <button class="success clear-btn" onclick="clearMad(1)">Limpiar Prueba 1</button>
+      </div>
+    </div>
+  </div>
+</main>
+<div class="save-indicator" id="saveIndicator">Guardado ✓</div>
+<script src="../shared/engine.js"></script>
+<script>
+  initTabs('m4_tabs_mad');
+  document.addEventListener('input', e => {
+    if (e.target.id && e.target.id.startsWith('m4_mad_')) {
+      calcMadera('prueba1');
+    }
+  });
+  function clearMad() {
+    document.querySelectorAll('#m4_mad_p1 input').forEach(i => i.value = '');
+    calcMadera('prueba1');
+  }
+</script>
+</body>
+</html>
