@@ -17,10 +17,6 @@
         <span class="mc-icon">🔗</span>
         <div class="mc-text"><span class="mc-title">Tracción (ASTM E8)</span><span class="mc-desc">Elongación y reducción de área</span></div>
       </button>
-      <button class="menu-card" onclick="showTool('met_torsion')">
-        <span class="mc-icon">🌀</span>
-        <div class="mc-text"><span class="mc-title">Torsión (ASTM E143)</span><span class="mc-desc">τ_max y módulo G</span></div>
-      </button>
     </div>
   </div>
 
@@ -52,7 +48,6 @@
         </div>
         <div class="result-box" id="m4_torsion_result_1">τ_max = 0 MPa, G = 0 MPa</div>
         <div class="viz-container" id="viz_m4_tors_1"></div>
-        <button class="send-report-btn" onclick="enviarAInforme('traccion','prueba1')">📤 Enviar a Informe</button>
         <button class="success clear-btn" onclick="clearMet(1)">Limpiar Prueba 1</button>
       </div>
       <div class="tab-content" id="m4_prueba2"></div>
@@ -67,7 +62,7 @@
   duplicateTabContent('m4_prueba1', 'm4_prueba2', '2');
   duplicateTabContent('m4_prueba1', 'm4_prueba3', '3');
   document.addEventListener('input', e => {
-    if (e.target.id && e.target.id.startsWith('m4_')) {
+    if (e.target.id && e.target.id.startsWith('m4_') && !e.target.id.startsWith('m4_mad_')) {
       const idx = e.target.id.slice(-1);
       calcModulo4('prueba' + idx);
     }
