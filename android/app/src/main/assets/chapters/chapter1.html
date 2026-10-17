@@ -60,7 +60,6 @@
           <div class="gran-results-item"><span>TM</span><strong id="m2_tm_1">No determinado</strong></div>
           <div class="gran-results-item"><span>TMN</span><strong id="m2_tmn_1">No determinado</strong></div>
         </div>
-        <button class="send-report-btn" onclick="enviarAInforme('granulometria','prueba1')">📤 Enviar a Informe</button>
         <button class="success clear-btn" data-prueba="1" onclick="clearGranulometria(1)">Limpiar Prueba 1</button>
       </div>
       <div class="tab-content" id="m2_prueba2"></div>
@@ -74,7 +73,7 @@
   initTabs('m2_tabs');
   duplicateTabContent('m2_prueba1', 'm2_prueba2', '2');
   duplicateTabContent('m2_prueba1', 'm2_prueba3', '3');
-  ['prueba1','prueba2','prueba3'].forEach((p, i) => loadGranulometria(p));
+  ['prueba1','prueba2','prueba3'].forEach((p) => loadGranulometria(p));
 
   document.addEventListener('input', e => {
     const t = e.target;
