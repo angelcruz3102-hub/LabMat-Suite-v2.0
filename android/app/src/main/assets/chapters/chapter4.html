@@ -14,14 +14,9 @@
     <p class="fs-small mb-10">Dosificación ACI, compresión, flexión y bloques de mampostería</p>
     <div class="menu-grid">
       <button class="menu-card" onclick="showTool('hor_comp')"><span class="mc-icon">💪</span><div class="mc-text"><span class="mc-title">Compresión</span><span class="mc-desc">ASTM C39</span></div></button>
-      <button class="menu-card" onclick="showTool('hor_trac')"><span class="mc-icon">🌉</span><div class="mc-text"><span class="mc-title">Tracción Indirecta</span><span class="mc-desc">ASTM C496</span></div></button>
-      <button class="menu-card" onclick="showTool('hor_flex')"><span class="mc-icon">📏</span><div class="mc-text"><span class="mc-title">Flexión</span><span class="mc-desc">ASTM C78</span></div></button>
-      <button class="menu-card" onclick="showTool('hor_aci')"><span class="mc-icon">📈</span><div class="mc-text"><span class="mc-title">Resistencia Media ACI</span><span class="mc-desc">f'cr</span></div></button>
-      <button class="menu-card" onclick="showTool('hor_bloq')"><span class="mc-icon">🧱</span><div class="mc-text"><span class="mc-title">Bloques</span><span class="mc-desc">ASTM C140</span></div></button>
     </div>
   </div>
 
-  <!-- COMPRESIÓN -->
   <div class="tool-view" data-tool="hor_comp" data-fn="calcModulo3">
     <button class="back-btn" onclick="showChapterMenu()">← Herramientas</button>
     <div class="card">
@@ -77,7 +72,6 @@
           <label for="m3_bloque_huecos_1">Área huecos:</label><input type="number" id="m3_bloque_huecos_1" step="any">
         </div>
         <div class="result-box" id="m3_bloque_result_1">σ bruto = 0, σ neto = 0</div>
-        <button class="send-report-btn" onclick="enviarAInforme('compresion','prueba1')">📤 Enviar a Informe</button>
         <button class="success clear-btn" onclick="clearHor(1)">Limpiar Prueba 1</button>
       </div>
       <div class="tab-content" id="m3_prueba2"></div>
