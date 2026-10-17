@@ -1,7 +1,5 @@
 /* ============================================================
    LabMat Suite v2.0 — Motor de cálculo compartido
-   Todas las funciones son globales para usarse desde cualquier
-   capítulo HTML.
    ============================================================ */
 
 // ============ UTILIDADES ============
@@ -67,23 +65,6 @@ function showToast(message, isError = false, duration = 2000) {
 // ============ CONSTANTES ============
 const SIEVE_MM = {'3"':75,'2"':50,'1 1/2"':37.5,'1"':25,'3/4"':19,'1/2"':12.5,'3/8"':9.5,'No. 4':4.75,'No. 8':2.36,'No. 16':1.18,'No. 30':0.6,'No. 50':0.3,'No. 100':0.15,'No. 200':0.075,'Fondo':0.01};
 
-const K_TEMP_TABLE = {15:1.0011,16:1.0007,17:1.0003,18:1.0000,19:0.9996,20:0.9993,21:0.9989,22:0.9985,23:0.9981,24:0.9977,25:0.9973,26:0.9969,27:0.9965,28:0.9961,29:0.9957,30:0.9953};
-function getKFactor(T) {
-    const keys = Object.keys(K_TEMP_TABLE).map(Number).sort((a, b) => a - b);
-    const minT = keys[0], maxT = keys[keys.length - 1];
-    if (T <= minT) return K_TEMP_TABLE[minT];
-    if (T >= maxT) return K_TEMP_TABLE[maxT];
-    for (let i = 0; i < keys.length - 1; i++) {
-        const t1 = keys[i], t2 = keys[i + 1];
-        if (T >= t1 && T <= t2) {
-            const k1 = K_TEMP_TABLE[t1], k2 = K_TEMP_TABLE[t2];
-            return k1 + (k2 - k1) * (T - t1) / (t2 - t1);
-        }
-    }
-    return 1.0000;
-}
-const CBR_STD_254 = 6.90, CBR_STD_508 = 10.35;
-
 // ============ NAVEGACIÓN DE HERRAMIENTAS ============
 function showTool(toolId) {
     $$('.tool-view').forEach(v => v.classList.toggle('active', v.dataset.tool === toolId));
@@ -131,7 +112,6 @@ function duplicateTabContent(srcId, tgtId, prefix) {
         btn.textContent = btn.textContent.replace(/Prueba\s+1/, 'Prueba ' + prefix);
         btn.dataset.prueba = prefix;
     });
-    tgt.querySelectorAll('.send-report-btn').forEach(btn => { btn.dataset.prueba = prefix; });
 }
 
 // ============ CAP 1 — GRANULOMETRÍA ============
@@ -243,6 +223,123 @@ function drawGranulometriaChart(prueba) {
     setSvg(`viz_m2_gran_${idx}`, `0 0 ${W} ${H}`, body, 360);
 }
 
+// ============ CAP 1B — PROPIEDADES DE ÁRIDOS ============
+
+// ---------- ASTM C127 ----------
+function calcAridosC127(prueba) {
+    const A = parseFloat(document.getElementById('c127_A_1')?.value) || 0;
+    const B = parseFloat(document.getElementById('c127_B_1')?.value) || 0;
+    const C = parseFloat(document.getElementById('c127_C_1')?.value) || 0;
+
+    if (A <= 0 || B <= 0 || C <= 0 || (B - C) <= 0) {
+        const r = document.getElementById('c127_result_1');
+        if (r) r.textContent = 'Completa los datos correctamente';
+        return;
+    }
+
+    const bulkDry = A / (B - C);
+    const bulkSSS = B / (B - C);
+    const apparent = A / (A - C);
+    const absorcion = ((B - A) / A) * 100;
+
+    document.getElementById('c127_bulk_dry_1').textContent = bulkDry.toFixed(3);
+    document.getElementById('c127_bulk_sss_1').textContent = bulkSSS.toFixed(3);
+    document.getElementById('c127_apparent_1').textContent = apparent.toFixed(3);
+    document.getElementById('c127_abs_1').textContent = absorcion.toFixed(2);
+
+    document.getElementById('c127_result_1').textContent =
+        `Densidad base seca: ${bulkDry.toFixed(3)} g/cm³ · Absorción: ${absorcion.toFixed(2)} %`;
+
+    saveState('c127_data', { A, B, C, bulkDry, bulkSSS, apparent, absorcion });
+}
+
+// ---------- ASTM C128 ----------
+function calcAridosC128(prueba) {
+    const A = parseFloat(document.getElementById('c128_A_1')?.value) || 0;
+    const B = parseFloat(document.getElementById('c128_B_1')?.value) || 0;
+    const C = parseFloat(document.getElementById('c128_C_1')?.value) || 0;
+    const D = parseFloat(document.getElementById('c128_D_1')?.value) || 0;
+
+    if (A <= 0 || B <= 0 || C <= 0 || D <= 0) {
+        const r = document.getElementById('c128_result_1');
+        if (r) r.textContent = 'Completa los datos correctamente';
+        return;
+    }
+
+    const bulkDry = A / (B + D - C);
+    const bulkSSS = B / (B + D - C);
+    const apparent = A / (A + D - C);
+    const absorcion = ((B - A) / A) * 100;
+
+    document.getElementById('c128_bulk_dry_1').textContent = bulkDry.toFixed(3);
+    document.getElementById('c128_bulk_sss_1').textContent = bulkSSS.toFixed(3);
+    document.getElementById('c128_apparent_1').textContent = apparent.toFixed(3);
+    document.getElementById('c128_abs_1').textContent = absorcion.toFixed(2);
+
+    document.getElementById('c128_result_1').textContent =
+        `Densidad base seca: ${bulkDry.toFixed(3)} g/cm³ · Absorción: ${absorcion.toFixed(2)} %`;
+
+    saveState('c128_data', { A, B, C, D, bulkDry, bulkSSS, apparent, absorcion });
+}
+
+// ---------- ASTM C129 ----------
+function calcAridosC129(prueba) {
+    const W = parseFloat(document.getElementById('c129_W_1')?.value) || 0;
+    const V = parseFloat(document.getElementById('c129_V_1')?.value) || 0;
+    const Wr = parseFloat(document.getElementById('c129_Wr_1')?.value) || 0;
+    const Wrs = parseFloat(document.getElementById('c129_Wrs_1')?.value) || 0;
+
+    if (V <= 0 || Wrs <= 0 || Wr <= 0) {
+        const r = document.getElementById('c129_result_1');
+        if (r) r.textContent = 'Completa los datos correctamente';
+        return;
+    }
+
+    const muestra = Wrs - Wr;
+    const rho = muestra / V;
+    const rhoKg = rho * 1000;
+
+    document.getElementById('c129_rho_1').textContent = rho.toFixed(3);
+    document.getElementById('c129_rho_kg_1').textContent = rhoKg.toFixed(0);
+    document.getElementById('c129_result_1').textContent =
+        `Densidad aparente: ${rho.toFixed(3)} g/cm³ (${rhoKg.toFixed(0)} kg/m³)`;
+
+    saveState('c129_data', { W, V, Wr, Wrs, rho, rhoKg });
+}
+
+// ---------- ASTM C29 ----------
+function calcAridosC29(prueba) {
+    const Wr = parseFloat(document.getElementById('c29_Wr_1')?.value) || 0;
+    const V = parseFloat(document.getElementById('c29_V_1')?.value) || 0;
+    const Gs = parseFloat(document.getElementById('c29_Gs_1')?.value) || 0;
+    const Ws = parseFloat(document.getElementById('c29_Ws_1')?.value) || 0;
+    const Wc = parseFloat(document.getElementById('c29_Wc_1')?.value) || 0;
+
+    if (V <= 0 || Ws <= 0 || Wr <= 0) {
+        const r = document.getElementById('c29_result_1');
+        if (r) r.textContent = 'Completa los datos correctamente';
+        return;
+    }
+
+    const muestraSuelta = Ws - Wr;
+    const muestraComp = Wc - Wr;
+    const puSuelto = muestraSuelta / V;
+    const puComp = muestraComp / V;
+    // Vacíos: ((Gs - γ) / Gs) × 100  con γ en g/cm³
+    const vacSuelto = Gs > 0 ? ((Gs - puSuelto) / Gs) * 100 : 0;
+    const vacComp = Gs > 0 ? ((Gs - puComp) / Gs) * 100 : 0;
+
+    document.getElementById('c29_pu_suelto_1').textContent = puSuelto.toFixed(3);
+    document.getElementById('c29_pu_comp_1').textContent = puComp.toFixed(3);
+    document.getElementById('c29_vac_suelto_1').textContent = vacSuelto.toFixed(2);
+    document.getElementById('c29_vac_comp_1').textContent = vacComp.toFixed(2);
+
+    document.getElementById('c29_result_1').textContent =
+        `PU suelto: ${puSuelto.toFixed(3)} g/cm³ · PU compactado: ${puComp.toFixed(3)} g/cm³`;
+
+    saveState('c29_data', { Wr, V, Gs, Ws, Wc, puSuelto, puComp, vacSuelto, vacComp });
+}
+
 // ============ CAP 2 — ESTADÍSTICA ============
 let statsValues = [];
 function loadStatsValues() {
@@ -267,7 +364,6 @@ function renderStats() {
         const disp = cv < 10 ? 'Excelente' : cv <= 15 ? 'Bueno' : 'Deficiente';
         const e = $('m6_stats_result');
         if (e) e.textContent = `n=${n}, Media=${mean.toFixed(3)}, s=${s.toFixed(3)}, CV=${cv.toFixed(2)}% (${disp})`;
-        // Extras
         const xmin = Math.min(...statsValues), xmax = Math.max(...statsValues);
         const range = xmax - xmin;
         const R = $('m6_range'); if (R) R.textContent = `${range.toFixed(3)}`;
@@ -288,7 +384,6 @@ window.addStatValue = function() {
 window.deleteStat = function(i) { statsValues.splice(i, 1); renderStats(); };
 window.clearStats = function() { statsValues = []; renderStats(); };
 
-// Curva normal estándar (aprox Zelen & Severo, precisión 7.5e-8)
 function normCDF(z) {
     const t = 1 / (1 + 0.2316419 * Math.abs(z));
     const d = 0.3989423 * Math.exp(-z * z / 2);
@@ -613,77 +708,6 @@ function drawMaderaBeam(prueba, P, L, b, h, MOR) {
     body += `<text x="${centerX}" y="${H-6}" text-anchor="middle" font-size="13" font-weight="600" fill="${cBeam}">MOR = ${MOR.toFixed(2)} MPa</text>`;
     setSvg(`viz_m4_mad_${idx}`, `0 0 ${W} ${H}`, body, 250);
 }
-
-// ============ CONECTOR → INFORME ============
-function enviarAInforme(ensayo, prueba) {
-    let reporteData = null;
-    if (ensayo === 'granulometria') reporteData = packGranulometria(prueba);
-    else if (ensayo === 'estadistica') reporteData = packEstadistica();
-    else if (ensayo === 'marshall') reporteData = packMarshall(prueba);
-    else if (ensayo === 'compresion') reporteData = packCompresion(prueba);
-    else if (ensayo === 'traccion') reporteData = packTraccion(prueba);
-    else if (ensayo === 'madera') reporteData = packMadera(prueba);
-    if (!reporteData) { showToast('⚠️ Nada que enviar', true); return; }
-    try {
-        localStorage.setItem('datosInformeActual', JSON.stringify(reporteData));
-        showToast('✅ Datos guardados. Ve a Informes.', false, 2800);
-    } catch (e) { console.error(e); showToast('⚠️ Error al guardar', true); }
-}
-function packGranulometria(prueba) {
-    const idx = prueba.slice(-1);
-    const table = document.getElementById(`m2_gran_table_${idx}`);
-    if (!table) return null;
-    const tablaDatos = [];
-    table.querySelectorAll('tbody tr').forEach(row => {
-        const t = row.cells[0].textContent.trim();
-        const apTexto = row.cells[1].textContent.trim();
-        let ap = parseFloat(apTexto);
-        if (isNaN(ap)) ap = SIEVE_MM[t] || null;
-        tablaDatos.push({
-            tamiz: t, abertura: ap, apertura: ap, aperturaMm: ap, aperturaTexto: apTexto,
-            pesoRetenido: parseFloat(row.querySelector('.m2_peso_retenido').value) || 0,
-            pctRetenido: parseFloat(row.cells[5].textContent) || 0,
-            pctAcumulado: parseFloat(row.cells[6].textContent) || 0,
-            pctPasa: parseFloat(row.cells[7].textContent) || 0
-        });
-    });
-    const mf = parseFloat((document.getElementById(`m2_mf_result_${idx}`)?.textContent || '').replace('Módulo de Finura = ', '')) || 0;
-    const pesoTotal = parseFloat((document.getElementById(`m2_peso_total_${idx}`)?.textContent || '0 g').replace(' g', '')) || 0;
-    const datosX = tablaDatos.filter(f => f.abertura !== null && !isNaN(f.abertura)).map(f => f.abertura);
-    const datosY = tablaDatos.filter(f => f.abertura !== null && !isNaN(f.abertura)).map(f => f.pctPasa);
-    return {
-        tipoEnsayo: "Granulometría ASTM C136", norma: "ASTM C136",
-        fecha: new Date().toISOString(),
-        metadatosAcademicos: { prueba },
-        tablaDatos,
-        resultadosFinales: { pesoTotal_g: pesoTotal, moduloFinura: mf },
-        grafica: { requiereGrafica: true, tipoEjeX: "logarithmic", titulo: "Curva Granulométrica",
-            etiquetaX: "Abertura (mm)", etiquetaY: "% que pasa", datosX, datosY, animation: false }
-    };
-}
-function packEstadistica() {
-    const n = statsValues.length;
-    if (n < 1) return null;
-    const mean = statsValues.reduce((a, b) => a + b, 0) / n;
-    const variance = n > 1 ? statsValues.reduce((a, b) => a + (b - mean) ** 2, 0) / (n - 1) : 0;
-    const s = Math.sqrt(variance);
-    const cv = mean !== 0 ? (s / mean) * 100 : 0;
-    return {
-        tipoEnsayo: "Análisis Estadístico", norma: "ASTM E2586",
-        fecha: new Date().toISOString(),
-        metadatosAcademicos: { numDeterminaciones: n },
-        tablaDatos: statsValues.map((v, i) => ({ index: i + 1, valor: v })),
-        resultadosFinales: { n, media: mean, varianza: variance, desviacionEstandar: s, cv_pct: cv,
-            rango: Math.max(...statsValues) - Math.min(...statsValues),
-            sturges_k: Math.round(1 + 3.322 * Math.log10(n)) },
-        grafica: { requiereGrafica: true, tipoEjeX: "linear", titulo: "Carta de Control",
-            datosX: statsValues.map((_, i) => i + 1), datosY: statsValues, animation: false }
-    };
-}
-function packMarshall(prueba) { return { tipoEnsayo: "Marshall", norma: "ASTM D6927", fecha: new Date().toISOString(), metadatosAcademicos: { prueba }, tablaDatos: [], resultadosFinales: {}, grafica: { requiereGrafica: false, datosX: [], datosY: [], animation: false } }; }
-function packCompresion(prueba) { return { tipoEnsayo: "Compresión", norma: "ASTM C39", fecha: new Date().toISOString(), metadatosAcademicos: { prueba }, tablaDatos: [], resultadosFinales: {}, grafica: { requiereGrafica: false, datosX: [], datosY: [], animation: false } }; }
-function packTraccion(prueba) { return { tipoEnsayo: "Tracción", norma: "ASTM E8", fecha: new Date().toISOString(), metadatosAcademicos: { prueba }, tablaDatos: [], resultadosFinales: {}, grafica: { requiereGrafica: false, datosX: [], datosY: [], animation: false } }; }
-function packMadera(prueba) { return { tipoEnsayo: "Flexión Madera", norma: "ASTM D143", fecha: new Date().toISOString(), metadatosAcademicos: { prueba }, tablaDatos: [], resultadosFinales: {}, grafica: { requiereGrafica: false, datosX: [], datosY: [], animation: false } }; }
 
 // ============ EXPORTAR / IMPORTAR ============
 function exportData() {
